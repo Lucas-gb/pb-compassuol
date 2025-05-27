@@ -1,18 +1,20 @@
 *** Settings ***
 Library    RequestsLibrary
+Resource    Base.robot
 
 *** Keywords ***
 PATCH Atualização parcial reserva
-    [Arguments]    ${booking_id}    ${token}
-    ${headers}    Create Dictionary
-    ...    Content-Type=application/json
-    ...    Accept=application/json
-    ...    Cookie=token=${token}
-
+    [Arguments]    ${booking_id}    ${token}    ${firstname}=James    ${lastname}=Brown
+    
     ${payload}    Create Dictionary
-    ...    firstname=James
-    ...    lastname=Brown
+    ...    firstname=${firstname}
+    ...    lastname=${lastname}
 
-    ${session}    Create Session    temp_session    https://restful-booker.herokuapp.com
-    PATCH On Session    temp_session    /booking/${booking_id}    json=${payload}    headers=${headers}
-    [Teardown]    Delete All Sessions
+    ${session}    Criar Sessão API
+    ${headers}    Criar Headers Com Token    ${token}
+    
+    ${response}    PATCH On Session    restful-booker    /booking/${booking_id}    
+    ...    json=${payload}    headers=${headers}
+    
+    Validar Status Code    ${response}
+    [Return]    ${response.json()}

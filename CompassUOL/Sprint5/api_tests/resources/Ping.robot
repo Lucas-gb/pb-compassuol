@@ -1,8 +1,11 @@
 *** Settings ***
 Library    RequestsLibrary
+Resource    Base.robot
 
 *** Keywords ***
 GET HealthCheck
-    ${session}    Create Session    temp_session    https://restful-booker.herokuapp.com
-    GET On Session    temp_session    /ping
-    [Teardown]    Delete All Sessions
+    [Documentation]    Verifica se a API está online através do endpoint /ping
+    ${session}    Criar Sessão API
+    ${response}    GET On Session    restful-booker    /ping
+    Validar Status Code    ${response}    201
+    [Return]    ${response}

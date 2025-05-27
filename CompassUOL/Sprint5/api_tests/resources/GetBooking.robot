@@ -1,20 +1,23 @@
 *** Settings ***
 Library    RequestsLibrary
 Library    Collections
+Resource    Base.robot
 
 *** Keywords ***
-GET Lista de IDs de Reserva
+GET Detalhes da Reserva
     [Arguments]    ${booking_id}
-    ${session}    Create Session    temp_session    https://restful-booker.herokuapp.com
-    ${response}    GET On Session    temp_session    /booking/${booking_id}
-    Should Be Equal As Numbers    ${response.status_code}    200
+    [Documentation]    Obtém os detalhes completos de uma reserva pelo ID
+    ${session}    Criar Sessão API
+    ${headers}    Criar Headers Básicos
+    
+    ${response}    GET On Session    restful-booker    /booking/${booking_id}    headers=${headers}
+    Validar Status Code    ${response}
     Log    Detalhes: ${response.json()}
-    [Teardown]    Delete All Sessions
+    [Return]    ${response.json()}
 
 GET Detalhes basicos da Reserva
     [Arguments]    ${booking_id}
-    ${session}    Create Session    temp_session    https://restful-booker.herokuapp.com
-    ${response}    GET On Session    temp_session    /booking/${booking_id}
-    Should Be Equal As Numbers    ${response.status_code}    200
+    [Documentation]    Obtém os detalhes básicos de uma reserva pelo ID
+    ${response}    GET Detalhes da Reserva    ${booking_id}
     Log    ID ${booking_id} retornado com sucesso
-    [Teardown]    Delete All Sessions
+    [Return]    ${response}
