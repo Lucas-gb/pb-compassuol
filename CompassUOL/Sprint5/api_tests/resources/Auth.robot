@@ -1,11 +1,7 @@
 *** Settings ***
 Library    RequestsLibrary
 Library    String
-
-*** Variables ***
-${BASE_URL}    https://restful-booker.herokuapp.com
-${USERNAME}    admin
-${PASSWORD}    password123
+Resource    Base.robot
 
 *** Keywords ***
 Autenticar usuário cadastrado e gerar token valido
@@ -14,18 +10,18 @@ Autenticar usuário cadastrado e gerar token valido
     ...    username=${USERNAME}    
     ...    password=${PASSWORD}
         
-    Create Session    restful-booker    ${BASE_URL}
-    ${headers}    Create Dictionary    Content-Type=application/json
+    ${session}    Criar Sessão API
+    ${headers}    Criar Headers Básicos
     
     ${resposta}    POST On Session    
     ...    restful-booker    /auth    
     ...    json=${body}    
     ...    headers=${headers}
     
+    Validar Status Code    ${resposta}
     [Return]    ${resposta.json()}
 
 Obter token
     [Documentation]    Retorna apenas o token sem fazer requisição adicional
     ${token_data}    Autenticar usuário cadastrado e gerar token valido
     [Return]    ${token_data['token']}
-

@@ -1,28 +1,23 @@
 *** Settings ***
 Library    RequestsLibrary
 Library    Collections
+Resource    Base.robot
 
 *** Keywords ***
 DELETE Reserva por ID
     [Arguments]    ${booking_id}    ${token}
-    # Configuração mínima necessária para esta API
-    ${headers}    Create Dictionary
-    ...    Content-Type=application/json
-    ...    Cookie=token=${token}
+    [Documentation]    Exclui uma reserva pelo ID usando o token de autenticação
     
-    # Criação da sessão com verificação SSL desativada
-    ${session}    Create Session    temp_session    https://restful-booker.herokuapp.com
-    ...    verify=${False}
+    ${session}    Criar Sessão API    verify_ssl=${False}
+    ${headers}    Criar Headers Com Token    ${token}
     
-    # Requisição DELETE com tratamento especial
-    ${response}    Run Keyword And Ignore Error
-    ...    DELETE On Session    temp_session    /booking/${booking_id}
+    ${status}    ${response}    Run Keyword And Ignore Error
+    ...    DELETE On Session    restful-booker    /booking/${booking_id}
     ...    headers=${headers}
     
-    # Verificação flexível do status code
-    Run Keyword If    '${response[0]}' == 'PASS'
+    Run Keyword If    '${status}' == 'PASS'
     ...    Log    Reserva ${booking_id} excluída com sucesso
     ...    ELSE
-    ...    Log    Falha ao excluir: ${response[1]}    level=WARN
+    ...    Log    Falha ao excluir: ${response}    level=WARN
     
-    [Teardown]    Delete All Sessions
+    [Return]    ${status}
