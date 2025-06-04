@@ -20,7 +20,7 @@ Cenario: Validar Cadastro De Produto Com Sucesso
     Log To Console    Obtido token: ${auth_token}
 
         Create Session    ServeRestProductSession    ${BASE_URL}
-    ${headers}=       Create Dictionary    Authorization=Bearer    ${auth_token}
+    ${headers}=       Create Dictionary    Authorization    ${auth_token}
 
     ${unique_product_name}=    Generate Random String    10    [NUMBERS][LETTERS]
     ${unique_product_name}=    Catenate    SEPARATOR=    Monitor Gamer    ${unique_product_name}

@@ -12,13 +12,13 @@ ${VALID_PASSWORD}       senhaadmin
 *** Keywords ***
 Login Com Credenciais Validas
     [Documentation]    
-    [Arguments]        ${email}=${VALID_EMAIL}    ${password}=${VALID_PASSWORD}
+    [Arguments]        ${email}    ${password}
 
     Create Session    ServeRestSession    ${BASE_URL}
 
     ${login_payload}=    Create Dictionary
-    ...    ${email}
-    ...    ${password}
+    ...    email=${email}
+    ...    password=${password}
 
     ${response}=    POST On Session    ServeRestSession    ${LOGIN_ENDPOINT}    json=${login_payload}
 
