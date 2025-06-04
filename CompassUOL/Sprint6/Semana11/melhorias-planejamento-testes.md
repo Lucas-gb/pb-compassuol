@@ -31,3 +31,7 @@ Para endereçar o feedback e refinar o planejamento de testes, foi realizada uma
 
 ## 3. Próximos Passos
 Iniciar a implementação dos testes automatizados utilizando Robot Framework para os casos identificados acima.
+
+## 4. Testes Automatizados Implementados
+ - product_tests.robot
+ - login_tests.robot
