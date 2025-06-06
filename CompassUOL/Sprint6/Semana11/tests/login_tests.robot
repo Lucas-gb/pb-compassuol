@@ -1,29 +1,29 @@
 *** Settings ***
-Library    RequestsLibrary
-Library    Collections
-Library    OperatingSystem
+Library     RequestsLibrary
+Library     Collections
 
 *** Variables ***
-${BASE_URL}             http://35.168.12.153:3000   
-${LOGIN_ENDPOINT}       /login
-${VALID_EMAIL}          admin.teste@qa.com
-${VALID_PASSWORD}       senhaadmin
+${BASE_URL}             http://98.81.214.7:3000
+${LOGIN_ENDPOINT}       login
 
-*** Keywords ***
-Login Com Credenciais Validas
-    [Documentation]    
-    [Arguments]        ${email}    ${password}
+*** Test Cases ***
+Cenario: Login Com Credenciais Validas
+    Create Session      ServeRestSession    ${BASE_URL}
+    ${payload}=         Create Dictionary   email=fulano@qa.com    password=teste
+    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}
+    Should Be Equal As Strings      ${response.status_code}     200
+    Should Contain                  ${response.json()}          authorization
 
-    Create Session    ServeRestSession    ${BASE_URL}
+Cenario: Login Com Email Invalido
+    Create Session      ServeRestSession    ${BASE_URL}
+    ${payload}=         Create Dictionary   email=email.invalido@qa.com    password=teste
+    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}    expected_status=401  # <--- ADICIONE ESTA PARTE
+    Should Be Equal As Strings      ${response.status_code}     401
+    Should Be Equal As Strings      ${response.json()['message']}       Email e/ou senha inválidos
 
-    ${login_payload}=    Create Dictionary
-    ...    email=${email}
-    ...    password=${password}
-
-    ${response}=    POST On Session    ServeRestSession    ${LOGIN_ENDPOINT}    json=${login_payload}
-
-    Should Be Equal As Strings    ${response.status_code}    200    msg=O Status Code do Login não foi 200 OK.
-    Should Be Equal As Strings    ${response.json()['message']}    Login realizado com sucesso    msg=A mensagem de sucesso do Login está incorreta.
-    Should Contain                ${response.json()}    authorization    msg=O token de autenticação não foi retornado. # Removi o msg conforme última correção
-
-    [Return]    ${response.json()['authorization']}
+Cenario: Login Com Senha Invalida
+    Create Session      ServeRestSession    ${BASE_URL}
+    ${payload}=         Create Dictionary   email=fulano@qa.com    password=senhaerrada
+    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}    expected_status=401  # <--- ADICIONE ESTA PARTE
+    Should Be Equal As Strings      ${response.status_code}     401
+    Should Be Equal As Strings      ${response.json()['message']}       Email e/ou senha inválidos

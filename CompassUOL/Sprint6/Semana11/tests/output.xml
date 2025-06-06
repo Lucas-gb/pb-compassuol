@@ -1,208 +1,183 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.2.2 (Python 3.13.3 on win32)" generated="2025-06-03T18:08:56.154032" rpa="false" schemaversion="5">
-<suite id="s1" name="Product Tests" source="C:\Users\Lucas\pb-compassuol\CompassUOL\Sprint6\Semana11\tests\product_tests.robot">
-<test id="s1-t1" name="Cenario: Validar Cadastro De Produto Com Sucesso" line="16">
-<kw name="Login Com Credenciais Validas" owner="login_tests">
+<robot generator="Robot 7.2.2 (Python 3.13.3 on win32)" generated="2025-06-06T10:24:38.628658" rpa="false" schemaversion="5">
+<suite id="s1" name="Login Tests" source="C:\Users\Lucas\pb-compassuol\CompassUOL\Sprint6\Semana11\tests\login_tests.robot">
+<test id="s1-t1" name="Cenario: Login Com Credenciais Validas" line="39">
 <kw name="Create Session" owner="RequestsLibrary">
-<msg time="2025-06-03T18:08:56.603449" level="INFO">Creating Session using : alias=ServeRestSession, url=http://35.153.207.138:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<msg time="2025-06-06T10:24:38.935731" level="INFO">Creating Session using : alias=ServeRestSession, url=http://98.81.214.7:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
 <arg>ServeRestSession</arg>
 <arg>${BASE_URL}</arg>
 <doc>Create Session: create a HTTP session to a server</doc>
-<status status="PASS" start="2025-06-03T18:08:56.603206" elapsed="0.000528"/>
+<status status="PASS" start="2025-06-06T10:24:38.935563" elapsed="0.000332"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2025-06-03T18:08:56.604331" level="INFO">${login_payload} = {'email': 'admin.teste@qa.com', 'password': 'senhaadmin'}</msg>
-<var>${login_payload}</var>
-<arg>email=${email}</arg>
-<arg>password=${password}</arg>
+<msg time="2025-06-06T10:24:38.936354" level="INFO">${payload} = {'email': 'fulano@qa.com', 'password': 'teste'}</msg>
+<var>${payload}</var>
+<arg>email=fulano@qa.com</arg>
+<arg>password=teste</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.603927" elapsed="0.000445"/>
+<status status="PASS" start="2025-06-06T10:24:38.936105" elapsed="0.000273"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2025-06-03T18:08:56.872808" level="INFO">POST Request : url=http://35.153.207.138:3000/login 
+<msg time="2025-06-06T10:24:39.232098" level="INFO">POST Request : url=http://98.81.214.7:3000/login 
  path_url=/login 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '57', 'Content-Type': 'application/json'} 
- body=b'{"email": "admin.teste@qa.com", "password": "senhaadmin"}' 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '47', 'Content-Type': 'application/json'} 
+ body=b'{"email": "fulano@qa.com", "password": "teste"}' 
  </msg>
-<msg time="2025-06-03T18:08:56.873044" level="INFO">POST Response : url=http://35.153.207.138:3000/login 
+<msg time="2025-06-06T10:24:39.232374" level="INFO">POST Response : url=http://98.81.214.7:3000/login 
  status=200, reason=OK 
- headers={'Access-Control-Allow-Origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '279', 'Date': 'Tue, 03 Jun 2025 21:08:56 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ headers={'Access-Control-Allow-Origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '265', 'Date': 'Fri, 06 Jun 2025 13:24:39 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
  body={
     "message": "Login realizado com sucesso",
-    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluLnRlc3RlQHFhLmNvbSIsInBhc3N3b3JkIjoic2VuaGFhZG1pbiIsImlhdCI6MTc0ODk4NDkzNiwiZXhwIjoxNzQ4OTg1NTM2fQ.i8GpWoDGgVglaQQW9GugW9Lzf1LBuLAqQZt4HgrLyqU"
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZ1bGFub0BxYS5jb20iLCJwYXNzd29yZCI6InRlc3RlIiwiaWF0IjoxNzQ5MjE2Mjc5LCJleHAiOjE3NDkyMTY4Nzl9.s0f7hImq7bnOgTINvJVXXtuBzWmXOtBtJoNRn_0SqxA"
 } 
  </msg>
-<msg time="2025-06-03T18:08:56.873336" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2025-06-06T10:24:39.232665" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>ServeRestSession</arg>
 <arg>${LOGIN_ENDPOINT}</arg>
-<arg>json=${login_payload}</arg>
+<arg>json=${payload}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.604509" elapsed="0.268884"/>
+<status status="PASS" start="2025-06-06T10:24:38.936617" elapsed="0.296116"/>
 </kw>
 <kw name="Should Be Equal As Strings" owner="BuiltIn">
-<msg time="2025-06-03T18:08:56.874956" level="INFO">Argument types are:
+<msg time="2025-06-06T10:24:39.234459" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${response.status_code}</arg>
 <arg>200</arg>
-<arg>msg=O Status Code do Login não foi 200 OK.</arg>
 <doc>Fails if objects are unequal after converting them to strings.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.873689" elapsed="0.001409"/>
-</kw>
-<kw name="Should Be Equal As Strings" owner="BuiltIn">
-<arg>${response.json()['message']}</arg>
-<arg>Login realizado com sucesso</arg>
-<arg>msg=A mensagem de sucesso do Login está incorreta.</arg>
-<doc>Fails if objects are unequal after converting them to strings.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.875368" elapsed="0.001087"/>
+<status status="PASS" start="2025-06-06T10:24:39.233399" elapsed="0.001196"/>
 </kw>
 <kw name="Should Contain" owner="BuiltIn">
 <arg>${response.json()}</arg>
 <arg>authorization</arg>
-<arg>msg=O token de autenticação não foi retornado. # Removi o msg conforme última correção</arg>
 <doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.876710" elapsed="0.001027"/>
+<status status="PASS" start="2025-06-06T10:24:39.235185" elapsed="0.000969"/>
 </kw>
-<return>
-<value>${response.json()['authorization']}</value>
-<status status="PASS" start="2025-06-03T18:08:56.877879" elapsed="0.000104"/>
-</return>
-<msg time="2025-06-03T18:08:56.878840" level="INFO">${auth_token} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluLnRlc3RlQHFhLmNvbSIsInBhc3N3b3JkIjoic2VuaGFhZG1pbiIsImlhdCI6MTc0ODk4NDkzNiwiZXhwIjoxNzQ4OTg1NTM2fQ.i8GpWoDGgVglaQQW9GugW9Lzf1LBuLAqQZt4H...</msg>
-<var>${auth_token}</var>
-<arg>email=${PRODUCT_LOGIN_EMAIL}</arg>
-<arg>password=${PRODUCT_LOGIN_PASSWORD}</arg>
-<doc>Realiza um login com credenciais válidas e retorna o token de autenticação.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.602002" elapsed="0.276900"/>
-</kw>
-<kw name="Log To Console" owner="BuiltIn">
-<arg>Obtido token: ${auth_token}</arg>
-<doc>Logs the given message to the console.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.879621" elapsed="0.000638"/>
-</kw>
+<status status="PASS" start="2025-06-06T10:24:38.934784" elapsed="0.301928"/>
+</test>
+<test id="s1-t2" name="Cenario: Login Com Email Invalido" line="46">
 <kw name="Create Session" owner="RequestsLibrary">
-<msg time="2025-06-03T18:08:56.881108" level="INFO">Creating Session using : alias=ServeRestProductSession, url=http://35.153.207.138:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
-<arg>ServeRestProductSession</arg>
+<msg time="2025-06-06T10:24:39.239239" level="INFO">Creating Session using : alias=ServeRestSession, url=http://98.81.214.7:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>ServeRestSession</arg>
 <arg>${BASE_URL}</arg>
 <doc>Create Session: create a HTTP session to a server</doc>
-<status status="PASS" start="2025-06-03T18:08:56.880801" elapsed="0.000620"/>
+<status status="PASS" start="2025-06-06T10:24:39.238949" elapsed="0.000575"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2025-06-03T18:08:56.882474" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluLnRlc3RlQHFhLmNvbSIsInBhc3N3b3JkIjoic2VuaGFhZG1pbiIsImlhdCI6MTc0ODk4NDkzNiwiZXhwIjoxNzQ4OTg1NTM2fQ.i8GpWoDGgVglaQQW9G...</msg>
-<var>${headers}</var>
-<arg>Authorization</arg>
-<arg>${auth_token}</arg>
+<msg time="2025-06-06T10:24:39.240391" level="INFO">${payload} = {'email': 'email.invalido@qa.com', 'password': 'teste'}</msg>
+<var>${payload}</var>
+<arg>email=email.invalido@qa.com</arg>
+<arg>password=teste</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.882034" elapsed="0.000504"/>
-</kw>
-<kw name="Generate Random String" owner="String">
-<msg time="2025-06-03T18:08:56.883638" level="INFO">${unique_product_name} = 8E26EByjFu</msg>
-<var>${unique_product_name}</var>
-<arg>10</arg>
-<arg>[NUMBERS][LETTERS]</arg>
-<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.883115" elapsed="0.000585"/>
-</kw>
-<kw name="Catenate" owner="BuiltIn">
-<msg time="2025-06-03T18:08:56.884648" level="INFO">${unique_product_name} = Monitor Gamer8E26EByjFu</msg>
-<var>${unique_product_name}</var>
-<arg>SEPARATOR=</arg>
-<arg>Monitor Gamer</arg>
-<arg>${unique_product_name}</arg>
-<doc>Catenates the given items together and returns the resulted string.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.884258" elapsed="0.000448"/>
-</kw>
-<kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2025-06-03T18:08:56.885825" level="INFO">${product_payload} = {'nome': 'Monitor Gamer8E26EByjFu', 'preco': '1499', 'descricao': 'Monitor gamer 27 polegadas, 144hz, 1ms, resolução Full HD.', 'quantidade': '10'}</msg>
-<var>${product_payload}</var>
-<arg>nome=${unique_product_name}</arg>
-<arg>preco=1499</arg>
-<arg>descricao=Monitor gamer 27 polegadas, 144hz, 1ms, resolução Full HD.</arg>
-<arg>quantidade=10</arg>
-<doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.885285" elapsed="0.000597"/>
+<status status="PASS" start="2025-06-06T10:24:39.240026" elapsed="0.000425"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2025-06-03T18:08:57.174504" level="INFO">POST Request : url=http://35.153.207.138:3000/produtos 
- path_url=/produtos 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluLnRlc3RlQHFhLmNvbSIsInBhc3N3b3JkIjoic2VuaGFhZG1pbiIsImlhdCI6MTc0ODk4NDkzNiwiZXhwIjoxNzQ4OTg1NTM2fQ.i8GpWoDGgVglaQQW9GugW9Lzf1LBuLAqQZt4HgrLyqU', 'Content-Length': '157', 'Content-Type': 'application/json'} 
- body=b'{"nome": "Monitor Gamer8E26EByjFu", "preco": "1499", "descricao": "Monitor gamer 27 polegadas, 144hz, 1ms, resolu\\u00e7\\u00e3o Full HD.", "quantidade": "10"}' 
+<msg time="2025-06-06T10:24:39.529125" level="INFO">POST Request : url=http://98.81.214.7:3000/login 
+ path_url=/login 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '55', 'Content-Type': 'application/json'} 
+ body=b'{"email": "email.invalido@qa.com", "password": "teste"}' 
  </msg>
-<msg time="2025-06-03T18:08:57.174993" level="INFO">POST Response : url=http://35.153.207.138:3000/produtos 
- status=201, reason=Created 
- headers={'Access-Control-Allow-Origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '82', 'Date': 'Tue, 03 Jun 2025 21:08:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+<msg time="2025-06-06T10:24:39.529323" level="INFO">POST Response : url=http://98.81.214.7:3000/login 
+ status=401, reason=Unauthorized 
+ headers={'Access-Control-Allow-Origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '48', 'Date': 'Fri, 06 Jun 2025 13:24:39 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
  body={
-    "message": "Cadastro realizado com sucesso",
-    "_id": "hf7KLu7RgvANZre0"
+    "message": "Email e/ou senha inválidos"
 } 
  </msg>
-<msg time="2025-06-03T18:08:57.175264" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<msg time="2025-06-06T10:24:39.529602" level="INFO">${response} = &lt;Response [401]&gt;</msg>
 <var>${response}</var>
-<arg>ServeRestProductSession</arg>
-<arg>${PRODUCTS_ENDPOINT}</arg>
-<arg>json=${product_payload}</arg>
-<arg>headers=${headers}</arg>
+<arg>ServeRestSession</arg>
+<arg>${LOGIN_ENDPOINT}</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=401</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2025-06-03T18:08:56.886426" elapsed="0.288897"/>
-</kw>
-<kw name="Log To Console" owner="BuiltIn">
-<arg>Corpo da Resposta do Produto (Erro): ${response.json()}</arg>
-<doc>Logs the given message to the console.</doc>
-<status status="PASS" start="2025-06-03T18:08:57.176167" elapsed="0.002322"/>
+<status status="PASS" start="2025-06-06T10:24:39.240899" elapsed="0.288770"/>
 </kw>
 <kw name="Should Be Equal As Strings" owner="BuiltIn">
-<msg time="2025-06-03T18:08:57.180873" level="INFO">Argument types are:
+<msg time="2025-06-06T10:24:39.531443" level="INFO">Argument types are:
 &lt;class 'int'&gt;
 &lt;class 'str'&gt;</msg>
 <arg>${response.status_code}</arg>
-<arg>201</arg>
-<arg>msg=O Status Code não foi 201 Created para cadastro de produto.</arg>
+<arg>401</arg>
 <doc>Fails if objects are unequal after converting them to strings.</doc>
-<status status="PASS" start="2025-06-03T18:08:57.179708" elapsed="0.001285"/>
+<status status="PASS" start="2025-06-06T10:24:39.530412" elapsed="0.001163"/>
 </kw>
 <kw name="Should Be Equal As Strings" owner="BuiltIn">
 <arg>${response.json()['message']}</arg>
-<arg>Cadastro realizado com sucesso</arg>
-<arg>msg=A mensagem de sucesso para cadastro de produto está incorreta.</arg>
+<arg>Email e/ou senha inválidos</arg>
 <doc>Fails if objects are unequal after converting them to strings.</doc>
-<status status="PASS" start="2025-06-03T18:08:57.181651" elapsed="0.000722"/>
+<status status="PASS" start="2025-06-06T10:24:39.532206" elapsed="0.006230"/>
 </kw>
-<kw name="Should Contain" owner="BuiltIn">
-<arg>${response.json()}</arg>
-<arg>_id</arg>
-<arg>msg=O ID do produto não foi retornado.</arg>
-<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
-<status status="PASS" start="2025-06-03T18:08:57.182763" elapsed="0.000695"/>
-</kw>
-<kw name="Log To Console" owner="BuiltIn">
-<arg>Produto cadastrado com sucesso! ID: ${response.json()['_id']}</arg>
-<doc>Logs the given message to the console.</doc>
-<status status="PASS" start="2025-06-03T18:08:57.183864" elapsed="0.000768"/>
-</kw>
-<doc>Testa se é possível cadastrar um novo produto com dados válidos, após login.</doc>
-<tag>api</tag>
-<tag>cadastro</tag>
-<tag>positivo</tag>
-<tag>produto</tag>
-<status status="PASS" start="2025-06-03T18:08:56.600670" elapsed="0.584235"/>
+<status status="PASS" start="2025-06-06T10:24:39.238020" elapsed="0.301127"/>
 </test>
-<status status="PASS" start="2025-06-03T18:08:56.155767" elapsed="1.030544"/>
+<test id="s1-t3" name="Cenario: Login Com Senha Invalida" line="53">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-06-06T10:24:39.541841" level="INFO">Creating Session using : alias=ServeRestSession, url=http://98.81.214.7:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>ServeRestSession</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-06-06T10:24:39.541439" elapsed="0.000649"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-06-06T10:24:39.542939" level="INFO">${payload} = {'email': 'fulano@qa.com', 'password': 'senhaerrada'}</msg>
+<var>${payload}</var>
+<arg>email=fulano@qa.com</arg>
+<arg>password=senhaerrada</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-06-06T10:24:39.542598" elapsed="0.000391"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-06-06T10:24:39.829434" level="INFO">POST Request : url=http://98.81.214.7:3000/login 
+ path_url=/login 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '53', 'Content-Type': 'application/json'} 
+ body=b'{"email": "fulano@qa.com", "password": "senhaerrada"}' 
+ </msg>
+<msg time="2025-06-06T10:24:39.830031" level="INFO">POST Response : url=http://98.81.214.7:3000/login 
+ status=401, reason=Unauthorized 
+ headers={'Access-Control-Allow-Origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '48', 'Date': 'Fri, 06 Jun 2025 13:24:39 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={
+    "message": "Email e/ou senha inválidos"
+} 
+ </msg>
+<msg time="2025-06-06T10:24:39.830322" level="INFO">${response} = &lt;Response [401]&gt;</msg>
+<var>${response}</var>
+<arg>ServeRestSession</arg>
+<arg>${LOGIN_ENDPOINT}</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=401</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-06-06T10:24:39.543467" elapsed="0.286916"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-06-06T10:24:39.832040" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>401</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-06-06T10:24:39.831101" elapsed="0.001063"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.json()['message']}</arg>
+<arg>Email e/ou senha inválidos</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-06-06T10:24:39.832743" elapsed="0.001139"/>
+</kw>
+<status status="PASS" start="2025-06-06T10:24:39.540470" elapsed="0.293855"/>
+</test>
+<status status="PASS" start="2025-06-06T10:24:38.629831" elapsed="1.205989"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="0" skip="0">All Tests</stat>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
-<stat pass="1" fail="0" skip="0">api</stat>
-<stat pass="1" fail="0" skip="0">cadastro</stat>
-<stat pass="1" fail="0" skip="0">positivo</stat>
-<stat pass="1" fail="0" skip="0">produto</stat>
 </tag>
 <suite>
-<stat name="Product Tests" id="s1" pass="1" fail="0" skip="0">Product Tests</stat>
+<stat name="Login Tests" id="s1" pass="3" fail="0" skip="0">Login Tests</stat>
 </suite>
 </statistics>
 <errors>
-<msg time="2025-06-03T18:08:56.589774" level="WARN">Error in file 'C:\Users\Lucas\pb-compassuol\CompassUOL\Sprint6\Semana11\tests\login_tests.robot' on line 30: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
 </errors>
 </robot>
