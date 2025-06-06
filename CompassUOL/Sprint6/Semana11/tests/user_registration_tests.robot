@@ -4,7 +4,7 @@ Library         Collections
 Library         String
 
 *** Variables ***
-${BASE_URL}             http://35.168.12.153:3000
+${BASE_URL}             http://98.81.214.7:3000
 ${USERS_ENDPOINT}       usuarios
 ${FULL_URL}             ${BASE_URL}/usuarios
 
