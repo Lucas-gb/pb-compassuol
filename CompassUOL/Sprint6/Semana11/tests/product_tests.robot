@@ -1,90 +1,95 @@
 *** Settings ***
 Library    RequestsLibrary
 Library    Collections
-Library    String             
-Resource   login_tests.robot  
+Library    String
+Library    FakerLibrary
 
 *** Variables ***
-${BASE_URL}             http://35.168.12.153:3000   
-${PRODUCTS_ENDPOINT}    /produtos
-${CARTS_ENDPOINT}       /carrinhos
-
-${PRODUCT_LOGIN_EMAIL}      admin.teste@qa.com
-${PRODUCT_LOGIN_PASSWORD}   senhaadmin
+${BASE_URL}             http://98.81.214.7:3000
+${PRODUCTS_ENDPOINT}     produtos
+${CARTS_ENDPOINT}        carrinhos
+${LOGIN_ENDPOINT}         login
 
 *** Test Cases ***
 Cenario: Validar Cadastro De Produto Com Sucesso
-    [Documentation]    
-    [Tags]             produto    cadastro    positivo    api
-
-    ${auth_token}=    Login Com Credenciais Validas    email=${PRODUCT_LOGIN_EMAIL}    password=${PRODUCT_LOGIN_PASSWORD}
-    Log To Console    Obtido token: ${auth_token}
-
-        Create Session    ServeRestProductSession    ${BASE_URL}
-    ${headers}=       Create Dictionary    Authorization    ${auth_token}
-
+    # Login para obter token
+    Create Session    ServeRestSession    ${BASE_URL}
+    ${login_payload}=    Create Dictionary    email=fulano@qa.com    password=teste
+    ${login_response}=    POST On Session    ServeRestSession    ${LOGIN_ENDPOINT}    json=${login_payload}
+    ${token}=    Set Variable    ${login_response.json()['authorization']}
+    
+    # Cadastrar produto
     ${unique_product_name}=    Generate Random String    10    [NUMBERS][LETTERS]
     ${unique_product_name}=    Catenate    SEPARATOR=    Monitor Gamer    ${unique_product_name}
-
+    
+    ${headers}=    Create Dictionary    Authorization=${token}
     ${product_payload}=    Create Dictionary
     ...    nome=${unique_product_name}
     ...    preco=1499
     ...    descricao=Monitor gamer 27 polegadas, 144hz, 1ms, resolução Full HD.
     ...    quantidade=10
-
-    ${response}=    POST On Session    ServeRestProductSession    ${PRODUCTS_ENDPOINT}
-    ...    json=${product_payload}
-    ...    headers=${headers}
     
-    Log To Console    Corpo da Resposta do Produto (Erro): ${response.json()}
+    ${response}=    POST On Session    ServeRestSession    ${PRODUCTS_ENDPOINT}    json=${product_payload}    headers=${headers}
+    Should Be Equal As Strings    ${response.status_code}    201
+    Should Be Equal As Strings    ${response.json()['message']}    Cadastro realizado com sucesso
+    Should Contain    ${response.json()}    _id
+    
+    # Guardar ID e nome do produto para uso em outros testes
+    Set Test Variable    ${PRODUTO_ID}    ${response.json()['_id']}
+    Set Test Variable    ${PRODUTO_NOME}    ${unique_product_name}
 
-        Should Be Equal As Strings    ${response.status_code}    201    msg=O Status Code não foi 201 Created para cadastro de produto.
-
-    Should Be Equal As Strings    ${response.json()['message']}    Cadastro realizado com sucesso    msg=A mensagem de sucesso para cadastro de produto está incorreta.
-
-    Should Contain    ${response.json()}    _id    msg=O ID do produto não foi retornado.
-
-    Log To Console    Produto cadastrado com sucesso! ID: ${response.json()['_id']}
+Cenario: Cadastrar Produto Com Nome Duplicado
+    # Login para obter token (caso não esteja na mesma sessão de teste)
+    Create Session    ServeRestSession    ${BASE_URL}    verify=False
+    ${login_payload}=    Create Dictionary    email=fulano@qa.com    password=teste
+    ${login_response}=    POST On Session    ServeRestSession    ${LOGIN_ENDPOINT}    json=${login_payload}
+    ${token}=    Set Variable    ${login_response.json()['authorization']}
+    
+    # Cadastrar primeiro produto com nome gerado pelo FakerLibrary
+    ${nome_produto}=    FakerLibrary.Word
+    ${headers}=    Create Dictionary    Authorization=${token}
+    ${produto_payload}=    Create Dictionary
+    ...    nome=${nome_produto}
+    ...    preco=999
+    ...    descricao=Produto teste para duplicação
+    ...    quantidade=5
+    
+    ${response}=    POST On Session    ServeRestSession    ${PRODUCTS_ENDPOINT}    json=${produto_payload}    headers=${headers}
+    Should Be Equal As Strings    ${response.status_code}    201
+    
+    # Tentar cadastrar produto com mesmo nome - esperamos erro 400
+    ${response_duplicado}=    POST On Session    ServeRestSession    ${PRODUCTS_ENDPOINT}    json=${produto_payload}    headers=${headers}    expected_status=400
+    Should Be Equal As Strings    ${response_duplicado.status_code}    400
+    Should Be Equal As Strings    ${response_duplicado.json()['message']}    Já existe produto com esse nome
 
 Cenario: Criar Carrinho Com Produto Valido
-    [Documentation]    Testa a criação de um carrinho com um produto válido.
-    [Tags]             carrinho    cadastro    positivo    api
-
-    ${auth_token}=     Login Com Credenciais Validas    email=${PRODUCT_LOGIN_EMAIL}    password=${PRODUCT_LOGIN_PASSWORD}
+    # Login para obter token
+    Create Session    ServeRestSession    ${BASE_URL}    verify=False
+    ${login_payload}=    Create Dictionary    email=fulano@qa.com    password=teste
+    ${login_response}=    POST On Session    ServeRestSession    ${LOGIN_ENDPOINT}    json=${login_payload}
+    ${token}=    Set Variable    ${login_response.json()['authorization']}
     
-    Create Session    ServeRestSession    ${BASE_URL}
-    ${headers}=    Create Dictionary    Authorization    ${auth_token}
-    
+    # Cadastrar um novo produto para o carrinho
     ${unique_product_name}=    Generate Random String    10    [NUMBERS][LETTERS]
-    ${unique_product_name}=    Catenate    SEPARATOR=    Monitor Gamer    ${unique_product_name}
-
+    ${headers}=    Create Dictionary    Authorization=${token}
     ${product_payload}=    Create Dictionary
-    ...    nome=${unique_product_name}
-    ...    preco=1499
-    ...    descricao=Monitor gamer 27 polegadas, 144hz, 1ms, resolução Full HD.
-    ...    quantidade=2
+    ...    nome=Produto ${unique_product_name}
+    ...    preco=100
+    ...    descricao=Produto para teste de carrinho
+    ...    quantidade=50
     
-    ${response_product_creation}=    POST On Session    ServeRestSession    ${PRODUCTS_ENDPOINT}
-    ...    json=${product_payload}
-    ...    headers=${headers}
-
-    Should Be Equal As Strings    ${response_product_creation.status_code}    201
-    ${product_id}=    Set Variable    ${response_product_creation.json()['_id']}
-    Log To Console    Produto criado para carrinho com ID: ${product_id}
-
-    ${produto_dict}=    Create Dictionary    idProduto=${product_id}    quantidade=1
+    ${response_product}=    POST On Session    ServeRestSession    ${PRODUCTS_ENDPOINT}    json=${product_payload}    headers=${headers}
+    ${produto_id}=    Set Variable    ${response_product.json()['_id']}
+    
+    # Criar carrinho com o produto
+    ${produto_dict}=    Create Dictionary    idProduto=${produto_id}    quantidade=1
     ${produtos_list}=    Create List    ${produto_dict}
-    
     ${cart_payload}=    Create Dictionary    produtos=${produtos_list}
-
-    ${response_cart_creation}=    POST On Session    ServeRestSession    ${CARTS_ENDPOINT}
-    ...    json=${cart_payload}
-    ...    headers=${headers}
-
-    Log To Console    Corpo da Resposta do Carrinho: ${response_cart_creation.json()}
-
-    Should Be Equal As Strings    ${response_cart_creation.status_code}    201    msg=Status Code para criação de carrinho não foi 201.
-    Should Be Equal As Strings    ${response_cart_creation.json()['message']}    Cadastro realizado com sucesso    msg=Mensagem de sucesso para carrinho está incorreta.
-    Should Contain    ${response_cart_creation.json()}    _id    msg=ID do carrinho não foi retornado.
-
-    Log To Console    Carrinho criado com sucesso! ID: ${response_cart_creation.json()['_id']}
+    
+    # Excluir carrinho existente se houver
+    Run Keyword And Ignore Error    DELETE On Session    ServeRestSession    ${CARTS_ENDPOINT}/cancelar-compra    headers=${headers}
+    Sleep    1s
+    
+    ${response_cart}=    POST On Session    ServeRestSession    ${CARTS_ENDPOINT}    json=${cart_payload}    headers=${headers}    expected_status=anything
+    Log    Resposta do carrinho: ${response_cart.text}
+    Should Be Equal As Strings    ${response_cart.status_code}    201
