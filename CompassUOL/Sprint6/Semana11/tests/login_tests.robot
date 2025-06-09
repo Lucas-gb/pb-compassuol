@@ -17,13 +17,13 @@ Cenario: Login Com Credenciais Validas
 Cenario: Login Com Email Invalido
     Create Session      ServeRestSession    ${BASE_URL}
     ${payload}=         Create Dictionary   email=email.invalido@qa.com    password=teste
-    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}    expected_status=401  # <--- ADICIONE ESTA PARTE
+    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}    expected_status=401  
     Should Be Equal As Strings      ${response.status_code}     401
     Should Be Equal As Strings      ${response.json()['message']}       Email e/ou senha inválidos
 
 Cenario: Login Com Senha Invalida
     Create Session      ServeRestSession    ${BASE_URL}
     ${payload}=         Create Dictionary   email=fulano@qa.com    password=senhaerrada
-    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}    expected_status=401  # <--- ADICIONE ESTA PARTE
+    ${response}=        POST On Session     ServeRestSession    ${LOGIN_ENDPOINT}    json=${payload}    expected_status=401  
     Should Be Equal As Strings      ${response.status_code}     401
     Should Be Equal As Strings      ${response.json()['message']}       Email e/ou senha inválidos
