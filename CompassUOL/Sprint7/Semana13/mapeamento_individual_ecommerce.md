@@ -15,6 +15,7 @@
 **Exemplo de Mapeamento (Robot Framework):**
 ```robotframework
 Click Element    xpath=(//a[@class='list-group-item'])[1]
+```
 
 ---
 
@@ -29,7 +30,7 @@ Click Element    xpath=(//a[@class='list-group-item'])[1]
 **Exemplo de Mapeamento (Robot Framework):**
 ```robotframework
 Click Element    xpath=//tbody[@id='tbodyid']/tr[1]/td[7]/a
-
+```
 ---
 
 ### Estratégia 3: Uso de Palavras-chave Customizadas
@@ -45,4 +46,4 @@ Click Element    xpath=//tbody[@id='tbodyid']/tr[1]/td[7]/a
 *** Keywords ***
 Fazer Pedido
     Click Element    xpath=//button[contains(.,'Place Order')]
-
+```
